@@ -6,6 +6,8 @@ The genTile format (.gnt) is an ascii format for representing game object defini
 
 genTile draws inspiration from the markdown definition, and from old school game designs done by hand on graph paper, as well as custom dungeon & dragons campaigns.
 
+This is a first draft, and there are numerous omissions (like material and character generation).
+
 
 
 # Types
@@ -177,3 +179,37 @@ The single quote (') is used to represent the scale of an object , the location 
 # B = @Bakery
 # M = @MeatMarket
 ```
+# AI and Scripting
+
+This is still to be defined, but the plan is to have an embedded JSON representation of action and dialog.  (?) is the prefix character for scripting.
+
+Something like this:
+
+```
+?weaponseller = {
+   {
+    "question" : "what do you want to buy?",
+    "answers" : [
+        {
+            "answer" : "Buy arrows" ,
+            "exchange" : {
+                "give" : { "name" : "coin" , "qty" : 20  } ,
+                "take" : { "name" : "arrows" , "qty" : 10 }
+            },
+            "fail" : "Sorry, you don't have enough gold.",
+            "succeed" : "Thank you, come again"
+        }
+    ]
+    ..
+}
+```
+
+Areas covered by scripting are
+
+- Conversation and trading (even if for information or karma).
+- Patroling, Fighting (Damage)
+- Plot advancement (trades that change state of the game)
+
+# Generators
+
+Initially, a definition will used to generate 2D and 2 1/2 D SVG graphics.
