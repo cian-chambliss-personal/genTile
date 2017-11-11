@@ -147,7 +147,7 @@ Override the default feature type by adding a legend character with the replacem
 #####.#######
 #    |      #
 #    |      #
-#----+------#
+.----+------.
 #    |      #
 #    r      #
 #####.#######
@@ -213,3 +213,6 @@ Areas covered by scripting are
 # Generators
 
 Initially, a definition will used to generate 2D and 2 1/2 D SVG graphics.
+
+Followed by output for scenes top 3d .obj files and a webGl renderer. 
+
