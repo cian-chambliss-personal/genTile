@@ -192,26 +192,42 @@ The single quote (') is used to represent the scale of an object , the location 
 ```
 # AI and Scripting
 
-This is still to be defined, but the plan is to have an embedded JSON representation of action and dialog.  (?) is the prefix character for scripting.
+[Whim]: https://github.com/cian-chambliss-personal/Whim
 
-Something like this:
+
+AI and scripting use the ?prefix and define thier content in the [Whim] format.  
+
+And example of embedded 'Whim' script:
 
 ```
 ?weaponseller = {
-   {
-    "question" : "what do you want to buy?",
-    "answers" : [
-        {
-            "answer" : "Buy arrows" ,
-            "exchange" : {
-                "give" : { "name" : "coin" , "qty" : 20  } ,
-                "take" : { "name" : "arrows" , "qty" : 10 }
-            },
-            "fail" : "Sorry, you don't have enough gold.",
-            "succeed" : "Thank you, come again"
-        }
-    ]
-    ..
+ @shop
+        > ?
+            " What do you want to buy?
+            = bow
+                > " Arrows
+                    - coin * 20
+                        " Sorry, you don't have enough gold.
+                    + arrow * 10
+                        " Sorry, you don't have enough room in your quiver.
+                    <
+            > " Sword
+                - coin * 300
+                    " Sorry, you don't have enough gold.
+                + sword
+                <
+            = first
+                > " Just browsing...
+                    " Let me know if you need help...
+                <
+            = next
+                ? " Anything else?
+                    ...
+            = notFirst
+                > " Nope.
+                <
+            " Thank you, come again!
+            <
 }
 ```
 
