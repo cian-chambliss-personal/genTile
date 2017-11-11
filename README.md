@@ -130,9 +130,9 @@ Every map already has a default expanse defined by the bounds, expanses within a
 
 The dash and pipe characters (-) and (|) characters denote north-south and east-west paths.
 
-The asterisk character (*) denotes a change in direction for a path.
+The asterisk character (\*) denotes a change in direction for a path.
 
-The slash characters (/) and (\) are used to connect diagonals.
+The slash characters (/) and (\\) are used to connect diagonals.
 
 The plus character (+) denotes either an intersection or tee.
 
