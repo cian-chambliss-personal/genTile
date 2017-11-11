@@ -4,8 +4,10 @@ Game Tile Generation Markup Language.
 
 The genTile format (.gnt) is an ascii format for representing game object definitions and levels.
 
-genTile draws inspiration from the [markdown definition]: https://en.m.wikipedia.org/wiki/Markdown 
-, the [xpm format]: https://en.m.wikipedia.org/wiki/X_PixMap
+genTile draws inspiration from the 
+[markdown definition]: https://en.m.wikipedia.org/wiki/Markdown 
+, the 
+[xpm format]: https://en.m.wikipedia.org/wiki/X_PixMap
 , and from old school game designs done on graph paper, as well as custom dungeon & dragons campaigns.
 
 This is a first draft, and there are numerous omissions (like material and character generation).
