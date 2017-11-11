@@ -11,17 +11,19 @@ The genTile format (.gnt) is an ascii format for representing game object defini
 genTile draws inspiration from the  [markdown definition], the  [xpm format]
 , and from old school game designs done on graph paper, as well as custom dungeon & dragons campaigns.
 
+Though the top level assumption is a top-down game, the markup language can handle elevations as well, so defining a platformer/side-scrollers should be possible (i.e. the super mario world games, the world selector is a top-down map, the levels are all in elevation).
+
 This is a first draft, and there are numerous omissions (like material and character generation).
 
 
 
 # Types
 
-Types for expanses start with a hash (#) character.  Examples would be grassland, sand, stone, pavers.
+Types for expanses start with a hash (#) character.  Examples would be grassland, sanddunes, rock, paved.  (note - a later draft will probably cover rules for generation of objects , subexpanses and features within an expanse)
 
 Types for features start with a exclamation mark (!). Example features are roads, paths, walls, streams, bridges and walkways, as well as routes used by AI to patrol.
 
-Types for objects start with alphabetic character. Examples are trees, rocks, goblins etc.
+Types for objects start with alphabetic character. Examples are individual trees, rocks, goblins etc.
 
 Types are defined as the name, followed by a '=' followed by a curly brace, with Json definition to a matching end curly brace '}'.
 
@@ -66,7 +68,7 @@ A portal source name starts with a (@) character, followed by a map name, follow
 
 If the map name includes a slash (/) character, then the name after the slash defines the submap as well as the orientation.
 
-Letter Number combinations are treated as row/column pairs, for nautical style charts.
+Letter Number combinations are treated as row/column pairs, for nautical style charts, an asterisk (\*) represents wildcard if it is desired there be a global fallback 'tile' or fallback for a row or column.
 
 Front, Left, Right and Left are elevations.
 Floor followed by number is level in a floor plan.
@@ -77,6 +79,10 @@ Example Charts
 @greatsea/A5
 @greatsea/B3
 @greatsea/Y11
+@greatsea/*
+@greatsea/C*
+@greatsea/*13
+
 
 Example Buildings
 
