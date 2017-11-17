@@ -241,19 +241,50 @@ Areas covered by scripting are
 
 The intermediate language for genTile is expressed in JSON.  The genTile input will be converted to a JSON format that drives the generators.
 
+The intermediate language has top level of "defs" and "maps" for definition types and map definitions.  points information is stored in separate channels (so that more channels can be added/ generated).
+
+
 ```JSON
 {
+    "defs" : {
+       "expanse" : {
+           "desert" :  {
+               "color" : "yellow"
+           },
+           "mesa" : {
+               "color" : "orange"
+           }
+       },
+       "feature" : {
+           "road" : {
+              "color" : "gray"
+           },
+           "dirt_road" {
+              "color" : "brown"
+           }
+       }
+    } ,
     "maps" : {
         "marketsquare" : {
-           "expanses" : [
-               {
-               "name" : "mesa_1",
-               "levels" : [
-                   { "name" : "base",
-                    "path" : [ 140, 100 , 0 , 150 , 80 , 0 , 145 , 120 ,0]                   
+           "type" : {  "expanse" : "desert"  } ,
+           "expanses" : {
+             "type" : "mesa" ,
+             "mesa_1" : {
+               "levels" : {
+                   "base" : { 
+                       "channel" : {
+                           "x" :  [ 120 , 150 , 145 ],
+                           "y" :  [ 100 , 20 , 120 ],
+                           "z" :  0
+                       }
+                    }
                    } ,
-                   { "name" : "summit",
-                    "path" : [ 140, 100 , 20 , 150 , 80 , 20 , 145 , 120 ,20]                   
+                   "summit" : {
+                       "channel" : {
+                           "x" :  [ 140 , 150 , 145 ],
+                           "y" :  [ 100 , 20 , 120 ],
+                           "z" :  20
+                       }
                    } 
                  ]           
                }
@@ -261,17 +292,11 @@ The intermediate language for genTile is expressed in JSON.  The genTile input w
            "features" : [
                {
                "name": "road_1",
-               "segments" : [
-                  {
-                    "name": "road_1_seg_1",
-                    "type": "road",
-                    "path" : [ 100, 20 , 0 , 110 , 40 , 0 , 120 , 30 ,0]
-                  },
-                  {
-                    "name": "road_1_seg_1",
-                    "type": "dirt_road",
-                    "path" : [ 130, 40 , 0 , 110 , 60 , 0 , 80 , 70 ,0]
-                  }
+               "channels" :
+                  "x" : [100,110,120,130,110,80],
+                  "y" : [20,40,30,40,60,70],
+                  "z" : 0                  
+                  "type" : ["road",null,null,"dirt_road",null,null]
                 ]
                }
            ]
