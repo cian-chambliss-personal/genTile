@@ -259,7 +259,7 @@ The intermediate language has top level of "defs" and "maps" for definition type
            "road" : {
               "color" : "gray"
            },
-           "dirt_road" {
+           "dirt_road" : {
               "color" : "brown"
            }
        }
@@ -268,8 +268,8 @@ The intermediate language has top level of "defs" and "maps" for definition type
         "marketsquare" : {
            "type" : {  "expanse" : "desert"  } ,
            "expanses" : {
-             "type" : "mesa" ,
              "mesa_1" : {
+               "type" : "mesa" ,
                "levels" : {
                    "base" : { 
                        "channel" : {
@@ -286,18 +286,17 @@ The intermediate language has top level of "defs" and "maps" for definition type
                            "z" :  20
                        }
                    } 
-                 ]           
+                 }                            
                }
-           ] ,
-           "features" : [
-               {
-               "name": "road_1",
-               "channels" :
+           } ,
+           "features" : {
+               "road_1" : {
+                  "channels" : {
                   "x" : [100,110,120,130,110,80],
                   "y" : [20,40,30,40,60,70],
                   "z" : 0                  
                   "type" : ["road",null,null,"dirt_road",null,null]
-                ]
+                  }
                }
            ]
            
