@@ -237,9 +237,34 @@ Areas covered by scripting are
 - Patroling, Fighting (Damage)
 - Plot advancement (trades that change state of the game)
 
+# Intermediate
+
+The intermediate language for genTile is expressed in JSON.  The genTile input will be converted to a JSON format that drives the generators.
+
+```JSON
+{
+    maps : {
+        "marketsquare" : {
+           "expanses" : [
+               {
+           
+               }
+           ] ,
+           "features" : [
+               {
+               }
+           ]
+           
+        } , 
+        "woods" : {
+        }
+    }
+}
+```
+
 # Generators
 
-Initially, a definition will used to generate 2D and 2 1/2 D SVG graphics.
+Initially, intermediate format will be used to generate will used to generate 2D and 2 1/2 D SVG graphics.
 
 Followed by output for scenes top 3d .obj files and a webGl renderer. 
 
