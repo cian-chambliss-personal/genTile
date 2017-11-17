@@ -294,12 +294,11 @@ The intermediate language has top level of "defs" and "maps" for definition type
                   "channels" : {
                   "x" : [100,110,120,130,110,80],
                   "y" : [20,40,30,40,60,70],
-                  "z" : 0                  
+                  "z" : 0 ,
                   "type" : ["road",null,null,"dirt_road",null,null]
                   }
                }
-           ]
-           
+           }           
         } , 
         "woods" : {
         }
