@@ -262,9 +262,16 @@ The intermediate language for genTile is expressed in JSON.  The genTile input w
                {
                "name": "road_1",
                "segments" : [
+                  {
                     "name": "road_1_seg_1",
                     "type": "road",
                     "path" : [ 100, 20 , 0 , 110 , 40 , 0 , 120 , 30 ,0]
+                  },
+                  {
+                    "name": "road_1_seg_1",
+                    "type": "dirt_road",
+                    "path" : [ 130, 40 , 0 , 110 , 60 , 0 , 80 , 70 ,0]
+                  }
                 ]
                }
            ]
