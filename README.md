@@ -243,15 +243,29 @@ The intermediate language for genTile is expressed in JSON.  The genTile input w
 
 ```JSON
 {
-    maps : {
+    "maps" : {
         "marketsquare" : {
            "expanses" : [
                {
-           
+               "name" : "mesa_1",
+               "levels" : [
+                   { "name" : "base",
+                    "path" : [ 140, 100 , 0 , 150 , 80 , 0 , 145 , 120 ,0]                   
+                   } ,
+                   { "name" : "summit",
+                    "path" : [ 140, 100 , 20 , 150 , 80 , 20 , 145 , 120 ,20]                   
+                   } 
+                 ]           
                }
            ] ,
            "features" : [
                {
+               "name": "road_1",
+               "segments" : [
+                    "name": "road_1_seg_1",
+                    "type": "road",
+                    "path" : [ 100, 20 , 0 , 110 , 40 , 0 , 120 , 30 ,0]
+                ]
                }
            ]
            
