@@ -208,7 +208,8 @@ class GenTileDef {
         var islands = this.getExpanseIslands(map) , island , i , j;
         var enames = new GT_NameGenerator();
         var fnames = new GT_NameGenerator();
-        var mapDef = { expanse : {} , feature : {} } , expanse , feature , path;
+        var onames = new GT_NameGenerator();
+        var mapDef = { expanse : {} , feature : {} , object : {} } , expanse , feature , path , objInst;
         for( i = 0 ; i < islands.length ; ++i ) {
             island = islands[i];
             if(island.name) {
@@ -241,10 +242,22 @@ class GenTileDef {
             feature.channels.z = 0;
             mapDef.feature[island.name] = feature;
         }
+        for( i = 0 ; i < map.objects.length ; ++i ) {
+            island = map.objects[i];
+            if( island.type ) {
+                if(island.name) {
+                    onames.AddName(island.name)
+                } else {
+                    island.name = onames.GetName(island.type );
+                }
+                objInst = { type : island.type , x : (island.col) , row : (island.row) };
+                mapDef.object[island.name] = objInst;
+            }
+        }
         return mapDef;
     }
     generateIntermediate() {
-        var obj = { defs : {} , maps : {} } , mapName , map;
+        var obj = { defs : { expanse : this.expanseTypes , feature : this.featureTypes} , maps : {} } , mapName , map;
         for( mapName in this.map ) {
             obj.maps[mapName] = this.generateMapIntermediate(this.map[mapName]);
         }
