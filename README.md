@@ -68,7 +68,9 @@ A portal source name starts with a (@) character, followed by a map name, follow
 
 If the map name includes a slash (/) character, then the name after the slash defines the submap as well as the orientation.
 
-Letter Number combinations are treated as row/column pairs, for nautical style charts, an asterisk (\*) represents wildcard if it is desired there be a global fallback 'tile' or fallback for a row or column.
+Letter Number combinations are treated as column/row pairs, for nautical style charts / spreadsheet notation, an asterisk (\*) represents wildcard if it is desired there be a global fallback 'tile' or fallback for a row or column.
+
+As with spreadsheets, ranges can be expressed as letter followed by number, followed by "..", followed by another letter and number.
 
 Front, Left, Right and Left are elevations.
 Floor followed by number is level in a floor plan.
@@ -82,6 +84,7 @@ Example Charts
 @greatsea/*
 @greatsea/C*
 @greatsea/*13
+@greatsea/G10..H12
 
 
 Example Buildings
