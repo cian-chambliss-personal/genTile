@@ -139,17 +139,17 @@ class GT_NameGenerator {
         this.namesUsed[name] = true;
     }
     GetName(type) {
-        var prefix , index;
+        var prefix, index;
         type = type.trim() + "_";
         prefix = type.toLowerCase();
         index = this.baseName[prefix];
-        if( !index ) {
+        if (!index) {
             index = 1;
         }
-        while(this.namesUsed[prefix+index])
+        while (this.namesUsed[prefix + index])
             ++index;
         this.baseName[prefix] = index;
-        type = type+index;
+        type = type + index;
         this.AddName(type);
         return type;
     }
@@ -173,92 +173,95 @@ class GenTileDef {
         }
         return islands;
     }
-    getSegmentsFromPath(feature,dx,dy) {
-        var segments = [] , points = [] , i , j , x , y , ch , pt;
+    getSegmentsFromPath(feature, dx, dy) {
+        var segments = [], points = [], i, j, x, y, ch, pt;
         var path = feature.path;
         for (i = 0; i < path.length; ++i) {
             pt = path[i];
             y = pt[0] * dy;
             x = pt[1] * dx;
             ch = pt[2];
-            if( ch === pipeChar || ch === quoteChar ) {
+            if (ch === pipeChar || ch === quoteChar) {
                 x += 0.5 * dx;
-            } else if( ch === dashChar || ch === equalChar ) {
-                y += 0.5 * dy; 
-            } else if( ch === asteriskChar || ch === plusChar ) {
+            } else if (ch === dashChar || ch === equalChar) {
+                y += 0.5 * dy;
+            } else if (ch === asteriskChar || ch === plusChar || ch === slashChar || ch === backSlashChar) {
                 x += 0.5 * dx;
                 y += 0.5 * dy;
             }
             points.push(x);
             points.push(y);
         }
-        segments.push({ path : points });
+        segments.push({ featureType: feature.featureType, path: points });
         return segments;
     }
-    generateExPathIntermediate(path,z) {
-        var po = { channels : { x : [] , y : [] , z : 0} } , i;
-        for( i = 0 ; i < path.length ; ++i ) {
-            po.channels.y.push( path[i][0] );
-            po.channels.x.push( path[i][1] );
+    generateExPathIntermediate(path, z) {
+        var po = { channels: { x: [], y: [], z: 0 } }, i;
+        for (i = 0; i < path.length; ++i) {
+            po.channels.y.push(path[i][0]);
+            po.channels.x.push(path[i][1]);
         }
         po.channels.z = z;
         return po;
     }
     generateMapIntermediate(map) {
-        var islands = this.getExpanseIslands(map) , island , i , j;
+        var islands = this.getExpanseIslands(map), island, i, j;
         var enames = new GT_NameGenerator();
         var fnames = new GT_NameGenerator();
         var onames = new GT_NameGenerator();
-        var mapDef = { expanse : {} , feature : {} , object : {} } , expanse , feature , path , objInst;
-        for( i = 0 ; i < islands.length ; ++i ) {
+        var mapDef = { expanse: {}, feature: {}, object: {} }, expanse, feature, path, objInst;
+        for (i = 0; i < islands.length; ++i) {
             island = islands[i];
-            if(island.name) {
+            if (island.name) {
                 enames.AddName(island.name)
             } else {
                 island.name = enames.GetName(island.expanseType || "expanse");
             }
-            expanse = { levels : { } };
-            if( island.edge.lower ) {
-                expanse.levels.lower = this.generateExPathIntermediate(island.edge.lower,0);
+            expanse = { levels: {} };
+            if (island.edge.lower) {
+                expanse.levels.lower = this.generateExPathIntermediate(island.edge.lower, 0);
             }
-            if( island.edge.upper ) {
-                expanse.levels.upper = this.generateExPathIntermediate(island.edge.upper,1);
+            if (island.edge.upper) {
+                expanse.levels.upper = this.generateExPathIntermediate(island.edge.upper, 1);
             }
             mapDef.expanse[island.name] = expanse;
         }
-        for( i = 0 ; i < map.features.length ; ++i ) {
-            island = this.getSegmentsFromPath(map.features[i],1,1);
-            if(island.name) {
-                fnames.AddName(island.name)
-            } else {
-                island.name = fnames.GetName(island.featureType || "feature");
+        for (i = 0; i < map.features.length; ++i) {
+            islands = this.getSegmentsFromPath(map.features[i], 1, 1);
+            for (j = 0; j < islands.length; ++j) {
+                island = islands[j];
+                if (island.name) {
+                    fnames.AddName(island.name)
+                } else {
+                    island.name = fnames.GetName(island.featureType || "feature");
+                }
+                feature = { channels: { x: [], y: [], z: 0, type: island.featureType || "feature" } };
+                path = island.path;
+                for (j = 0; j < path.length; j += 2) {
+                    feature.channels.x.push(path[j]);
+                    feature.channels.y.push(path[j + 1]);
+                }
+                feature.channels.z = 0;
+                mapDef.feature[island.name] = feature;
             }
-            feature = { channels : { x : [] , y : [] , z : 0} };
-            path = island[0].path;
-            for (j = 0; j < path.length; j += 2 ) {
-                feature.channels.x.push(path[j]);
-                feature.channels.y.push(path[j+1]);
-            }
-            feature.channels.z = 0;
-            mapDef.feature[island.name] = feature;
         }
-        for( i = 0 ; i < map.objects.length ; ++i ) {
+        for (i = 0; i < map.objects.length; ++i) {
             island = map.objects[i];
-            if( island.type ) {
-                if(island.name) {
+            if (island.type) {
+                if (island.name) {
                     onames.AddName(island.name)
                 } else {
-                    island.name = onames.GetName(island.type );
+                    island.name = onames.GetName(island.type);
                 }
-                objInst = { type : island.type , x : (island.col) , row : (island.row) };
+                objInst = { type: island.type, x: (island.col), row: (island.row) };
                 mapDef.object[island.name] = objInst;
             }
         }
         return mapDef;
     }
     generateIntermediate() {
-        var obj = { defs : { expanse : this.expanseTypes , feature : this.featureTypes} , maps : {} } , mapName , map;
-        for( mapName in this.map ) {
+        var obj = { defs: { expanse: this.expanseTypes, feature: this.featureTypes }, maps: {} }, mapName, map;
+        for (mapName in this.map) {
             obj.maps[mapName] = this.generateMapIntermediate(this.map[mapName]);
         }
         return obj;
@@ -373,16 +376,16 @@ const followFeatures = function (tiles, row, col) {
 
     const recursePath = function (row, col, lastChar) {
         var ch = tiles[row][col];
-        feature.push([row,col,ch]);
+        feature.push([row, col, ch]);
         tiles[row][col] = 0;
-        if (ch === pipeChar || ch === quoteChar ) {
+        if (ch === pipeChar || ch === quoteChar) {
             if (isVert(row - 1, col)) {
                 recursePath(row - 1, col, pipeChar);
             }
             if (isVert(row + 1, col)) {
                 recursePath(row + 1, col, pipeChar);
             }
-        } else if (ch === dashChar || ch === equalChar ) {
+        } else if (ch === dashChar || ch === equalChar) {
             if (isHoriz(row, col - 1)) {
                 recursePath(row, col - 1, dashChar);
             }
@@ -390,7 +393,7 @@ const followFeatures = function (tiles, row, col) {
                 recursePath(row, col + 1, dashChar);
             }
         } else if (ch === plusChar || ch === asteriskChar || ch === slashChar || ch === backSlashChar) {
-            if (lastChar === dashChar || lastChar === equalChar ) {
+            if (lastChar === dashChar || lastChar === equalChar) {
                 if (isHoriz(row, col - 1)) {
                     recursePath(row, col - 1, dashChar);
                 } else if (isHoriz(row, col + 1)) {
@@ -408,7 +411,7 @@ const followFeatures = function (tiles, row, col) {
                 } else if (isVert(row + 1, col)) {
                     recursePath(row + 1, col, pipeChar);
                 }
-            } else if (lastChar === pipeChar || lastChar === quoteChar ) {
+            } else if (lastChar === pipeChar || lastChar === quoteChar) {
                 if (isVert(row - 1, col)) {
                     recursePath(row - 1, col, pipeChar);
                 } else if (isVert(row + 1, col)) {
@@ -433,7 +436,7 @@ const followFeatures = function (tiles, row, col) {
         }
     };
     recursePath(row, col);
-    features.push({ path : feature });
+    features.push({ path: feature });
     return features;
 };
 
@@ -442,11 +445,11 @@ const followFeatures = function (tiles, row, col) {
  */
 const postProcessMap = function (def, map) {
     var rows = map.tiles.length, line;
-    var cols = map.tiles[0].length, i, z;
+    var cols = map.tiles[0].length, i, j, k, z;
     var tilemap = [];
     var row, col, cell, codes, code;
     var heights = [], height;
-    var expanseTypes = [], expanseType;
+    var expanseTypes = [], featureTypes = [], expanseType;
     for (row = 0; row < rows; ++row) {
         codes = [];
         for (col = 0; col < cols; ++col) {
@@ -456,8 +459,13 @@ const postProcessMap = function (def, map) {
                 if (cell.legend.objType) {
                     map.objects.push({ type: cell.legend.objType, row: row, col: col });
                 }
-                if (cell.legend.expanseType || cell.legend.height || cell.legend.scalar) {
+                if (cell.legend.expanseType
+                    || cell.legend.height || cell.legend.scalar
+                ) {
                     expanseTypes.push({ legend: cell.legend, row: row, col: col });
+                }
+                if (cell.legend.featureType) {
+                    featureTypes.push({ legend: cell.legend, row: row, col: col });
                 }
                 code = cell.legend.replaces.charCodeAt(0);
             } else {
@@ -471,15 +479,30 @@ const postProcessMap = function (def, map) {
         tilemap.push(codes);
     }
     // Collect feature 'overlays'
-    var features = [];
+    var features = [], feature;
     for (row = 0; row < rows; ++row) {
         for (col = 0; col < cols; ++col) {
             if (tilemap[row][col] === pipeChar
-             || tilemap[row][col] ===  quoteChar
-             || tilemap[row][col] === dashChar
-             || tilemap[row][col] === equalChar
+                || tilemap[row][col] === quoteChar
+                || tilemap[row][col] === dashChar
+                || tilemap[row][col] === equalChar
             ) {
                 features = features.concat(followFeatures(tilemap, row, col));
+            }
+        }
+    }
+    for (i = 0; i < features.length; ++i) {
+        feature = features[i];
+        for (j = 0; j < feature.path.length; ++j) {
+            row = feature.path[j][0];
+            col = feature.path[j][1];
+            for (k = 0; k < featureTypes.length; ++k) {
+                if (featureTypes[k].row === row) {
+                    if (featureTypes[k].col == col) {
+                        feature.featureType = featureTypes[k].legend.featureType;
+                        break;
+                    }
+                }
             }
         }
     }
@@ -706,7 +729,7 @@ const parseGentile = function (source) {
     return obj;
 };
 
-exports.parseGentile = function(def) {
+exports.parseGentile = function (def) {
     var gt = parseGentile(def);
     return gt.generateIntermediate();
 }
