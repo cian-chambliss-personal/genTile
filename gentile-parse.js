@@ -237,10 +237,12 @@ class GenTileDef {
             }
             expanse = { levels: {} };
             if (island.edge.lower) {
-                expanse.levels.lower = this.generateExPathIntermediate(island.edge.lower, 0);
-            }
-            if (island.edge.upper) {
-                expanse.levels.upper = this.generateExPathIntermediate(island.edge.upper, 1);
+                expanse.channels = this.generateExPathIntermediate(island.edge.lower, 0).channels;
+                if( island.edge.upper ) {
+                    expanse.channels.inner = this.generateExPathIntermediate(island.edge.upper, 1);
+                }
+            } else if (island.edge.upper) {
+                expanse.channels = this.generateExPathIntermediate(island.edge.upper, 0).channels;
             }
             mapDef.expanse[island.name] = expanse;
         }
