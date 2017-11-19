@@ -1,3 +1,25 @@
+/*
+Copyright (c) 2017, Cian Chambliss, Eavan Chambliss
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/  
+
 const pipeChar = "|".charCodeAt(0);
 const dashChar = "-".charCodeAt(0);
 const asteriskChar = "*".charCodeAt(0);
@@ -7,6 +29,7 @@ const backSlashChar = "\\".charCodeAt(0);
 const quoteChar = '"'.charCodeAt(0);
 const equalChar = "=".charCodeAt(0);
 const colonChar = ':'.charCodeAt(0);
+const jsonParser = require('./relaxed-json.js');
 
 //---------------- The map class
 class Map {
@@ -662,7 +685,9 @@ const parseGentile = function (source) {
                 name = pendingDef.substr(0, pendingDef.indexOf("=")).trim();
                 pendingDef = pendingDef.substr(pendingDef.indexOf("=") + 1);
                 try {
-                    pendingDef = JSON.parse(pendingDef);
+                    jsonParser.parse
+                    //pendingDef = JSON.parse(pendingDef);
+                    pendingDef = jsonParser.parse(pendingDef);
                     if (name.charAt(0) === '#') {
                         name = name.substr(1).trim();
                         obj.expanseTypes[name] = pendingDef;
