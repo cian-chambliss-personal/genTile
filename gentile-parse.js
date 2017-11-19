@@ -176,14 +176,23 @@ class GenTileDef {
     getSegmentsFromPath(feature, dx, dy) {
         var segments = [], points = [], i, j, x, y, ch, pt;
         var path = feature.path;
+        var widths = [], width = 1 , widthChanged = false;
         for (i = 0; i < path.length; ++i) {
             pt = path[i];
             y = pt[0] * dy;
             x = pt[1] * dx;
             ch = pt[2];
             if (ch === pipeChar || ch === quoteChar) {
+                if (ch === quoteChar)
+                    width = 2;
+                else
+                    width = 1;
                 x += 0.5 * dx;
             } else if (ch === dashChar || ch === equalChar) {
+                if (ch === equalChar)
+                    width = 2;
+                else
+                    width = 1;
                 y += 0.5 * dy;
             } else if (ch === asteriskChar || ch === plusChar || ch === slashChar || ch === backSlashChar) {
                 x += 0.5 * dx;
@@ -191,8 +200,17 @@ class GenTileDef {
             }
             points.push(x);
             points.push(y);
+            if( !widthChanged && widths.length ) {
+                if( widths[widths.length-1] !== width ) {
+                    widthChanged = true;
+                }
+            }
+            widths.push(width);
         }
-        segments.push({ featureType: feature.featureType, path: points });
+        if( !widthChanged ) {
+            widths = width;
+        }
+        segments.push({ featureType: feature.featureType, path: points, width: widths });
         return segments;
     }
     generateExPathIntermediate(path, z) {
@@ -235,7 +253,7 @@ class GenTileDef {
                 } else {
                     island.name = fnames.GetName(island.featureType || "feature");
                 }
-                feature = { channels: { x: [], y: [], z: 0, type: island.featureType || "feature" } };
+                feature = { channels: { x: [], y: [], z: 0, width: island.width , type: island.featureType || "feature" } };
                 path = island.path;
                 for (j = 0; j < path.length; j += 2) {
                     feature.channels.x.push(path[j]);
