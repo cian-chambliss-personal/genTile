@@ -268,29 +268,32 @@ The intermediate language has top level of "defs" and "maps" for definition type
        }
     } ,
     "maps" : {
-        "marketsquare" : {
+        "highdesert" : {
            "type" : {  "expanse" : "desert"  } ,
            "expanses" : {
-             "mesa_1" : {
-               "type" : "mesa" ,
-               "levels" : {
-                   "base" : { 
-                       "channel" : {
-                           "x" :  [ 120 , 150 , 145 ],
-                           "y" :  [ 100 , 20 , 120 ],
-                           "z" :  0
-                       }
-                    }
-                   } ,
-                   "summit" : {
-                       "channel" : {
-                           "x" :  [ 140 , 150 , 145 ],
-                           "y" :  [ 100 , 20 , 120 ],
-                           "z" :  20
-                       }
-                   } 
-                 }                            
-               }
+            "sand_1": {
+              "levels": {},
+              "channels": {
+                "x": [0,26,26,0],
+                "y": [0,0,16,16],
+                "z": 0
+              }
+            },
+            "mesa_1": {
+              "levels": {},
+              "channels": {
+                "x": [5,6,7,8,9,11,11,11,9,8,7,6,5,4,4,4],
+                "y": [6,6,6,6,6,7,8,9,11,11,11,11,11,9,8,7],
+                "z": 0,
+                "inner": {
+                  "channels": {
+                    "x": [5,6,7,8,9,11,11,11,9,8,7,6,5,4,4,4],
+                    "y": [6,6,6,6,6,7,8,9,11,11,11,11,11,9,8,7],
+                    "z": 1
+                  }
+                }
+              }
+            }
            } ,
            "features" : {
                "road_1" : {
