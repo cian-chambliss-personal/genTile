@@ -29,11 +29,15 @@ Types are defined as the name, followed by a '=' followed by a curly brace, with
 
 ```
 #sand = {
-    "color" : "Yellow"
+    color : "Yellow"
 }
 
 !road = {
-    "color" : "LightBlue"
+    color : "LightBlue"
+}
+
+tree = {
+   color : "Green"
 }
 ```
 
