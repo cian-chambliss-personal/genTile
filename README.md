@@ -23,7 +23,7 @@ Types for expanses start with a hash (#) character.  Examples would be grassland
 
 Types for features start with a exclamation mark (!). Example features are roads, paths, walls, streams, bridges and walkways, as well as routes used by AI to patrol.
 
-Types for objects start with alphabetic character. Examples are individual trees, rocks, goblins etc.
+Types for objects start with alphabetic character. Examples are individual trees, rocks, goblins etc.  The shape is described uses 'thingy' markup.
 
 Types are defined as the name, followed by a '=' followed by a curly brace, with Json definition to a matching end curly brace '}'.
 
@@ -37,8 +37,13 @@ Types are defined as the name, followed by a '=' followed by a curly brace, with
 }
 
 tree = {
-   color : "Green"
+   color : "Green",
+   height : "30'"
 }
+
+tree.shape = [
+   cone (green,large,above) - cylinder (thin,brown)
+]
 ```
 
 Properties for types are yet to be determined (there are also going to need to be rules that govern how types interact with each other).
